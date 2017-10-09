@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.0/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
+</head>
+<body ng-controller="MyController">
+    <div class="container" ng>
+        <p class="input-group">
+            <input type="text" class="form-control" datetime-picker="HH:mm" enable-date="false" timepicker-options="{showMeridian: false}" ng-model="myDate" is-open="isOpen" />
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openCalendar($event, prop)">
+                    <i class="fa fa-calendar"></i>
+                </button>
+            </span>
+        </p>
+    </div>
+</body>
+<script>
+    var app = angular.module('app', ['ui.bootstrap', 'ui.bootstrap.datetimepicker']);
+
+    app.controller('MyController', function ($scope) {
+
+        $scope.isOpen = false;
+        $scope.myDate = new Date();
+
+        $scope.openCalendar = function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            $scope.isOpen = true;
+        };
+    });
+</script>
+
+</html>

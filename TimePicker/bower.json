@@ -1,0 +1,9 @@
+{
+  "name": "myproject",
+  "dependencies": {
+    "angular": "1.4.0",
+    "angular-ui-bootstrap": "1.2.0",
+    "bootstrap-ui-datetime-picker": "^2.6.0",
+    "moment": "2.18.1"
+  }
+}
