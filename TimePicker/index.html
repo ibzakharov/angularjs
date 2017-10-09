@@ -7,18 +7,24 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.0/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/moment/min/moment.min.js"></script>
     <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
 </head>
 <body ng-controller="MyController">
     <div class="container" ng>
         <p class="input-group">
-            <input type="text" class="form-control" datetime-picker="HH:mm" enable-date="false" timepicker-options="{showMeridian: false}" ng-model="myDate" is-open="isOpen" />
+            <input type="text" class="form-control" datetime-picker="HH:mm" enable-date="false" timepicker-options="{showMeridian: false}" ng-model="model" 
+                   is-open="isOpen" save-as="localDateToLocalDuration" read-as="localDurationToLocalDate" button-bar="{show: false}" />
             <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="openCalendar($event, prop)">
                     <i class="fa fa-calendar"></i>
                 </button>
             </span>
         </p>
+        <p style="margin: 200px;"></p>
+        <p>{{model}}</p>
+        <p>{{duration}}</p>
+        <p>{{durationDate}}</p>
     </div>
 </body>
 <script>
@@ -26,8 +32,28 @@
 
     app.controller('MyController', function ($scope) {
 
+        $scope.localDurationToLocalDate = function (localDuration) {
+            var now = new Date();
+            var startOfDay = moment(now).local().startOf('day');
+            // correct times in case of timezone switches (winter to summer time or vice versa)
+            var parsedDuration = moment.duration(localDuration)
+                .add((startOfDay.utcOffset() - moment(now).utcOffset()) * -1, 'm');
+            var local = startOfDay.add(parsedDuration);
+            return local.toDate();
+        };
+
+        $scope.localDateToLocalDuration = function (localDate) {
+            var local = moment(localDate).local();
+            var startOfDay = moment(localDate).local().startOf('day');
+            var milliseconds = local.diff(startOfDay);
+            return (moment.duration(milliseconds)).toJSON();
+        }
+
         $scope.isOpen = false;
-        $scope.myDate = new Date();
+        //$scope.model = new Date();
+        $scope.model = $scope.localDateToLocalDuration(new Date());
+        $scope.duration = $scope.localDateToLocalDuration($scope.model);
+        $scope.durationDate = $scope.localDurationToLocalDate($scope.duration);
 
         $scope.openCalendar = function (e) {
             e.preventDefault();
