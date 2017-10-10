@@ -1,0 +1,8 @@
+{
+  "name": "myproject",
+  "dependencies": {
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "angular": "^1.6.6",
+    "bootstrap": "^3.3.7"
+  }
+}
